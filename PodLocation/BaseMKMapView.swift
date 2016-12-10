@@ -10,7 +10,7 @@ import Foundation
 import MapKit
 import BaseUtils
 
-private let REGION_RADIUS: CLLocationDistance = 200
+private let REGION_RADIUS: CLLocationDistance = 100
 //private let testRegion = MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(0, 0), 1, 1)
 private let M2DEG = MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(0, 0), 1, 1).span.latitudeDelta
 
@@ -41,8 +41,8 @@ open class BaseMKMapView: MKMapView, MKMapViewDelegate {
         setupLocationManager()
     }
     
-    open func getShowsPointsOfInterest() -> Bool { return false }
-    open func getShowsBuildings() -> Bool { return false }
+    open func getShowsPointsOfInterest() -> Bool { return true }
+    open func getShowsBuildings() -> Bool { return true }
     open func getShowsUserLocation() -> Bool { return true }
     open func getIsZoomEnabled() -> Bool { return false }
     open func getIsScrollEnabled() -> Bool { return false }
@@ -54,27 +54,29 @@ open class BaseMKMapView: MKMapView, MKMapViewDelegate {
         LocationManager.instance.start(callback: callback)
     }
     
-    private let regionRadius: CLLocationDistance = 200
     open func centerMapOnLocation(location: CLLocation) {
         self.centerMapOnLocation(coordinate: location.coordinate)
     }
     open func centerMapOnLocation(coordinate: CLLocationCoordinate2D) {
         let coordinateRegion = MKCoordinateRegionMakeWithDistance(coordinate,
-                                                                  regionRadius * 2.0, regionRadius * 2.0)
+                                                                  REGION_RADIUS * 2.0, REGION_RADIUS * 2.0)
         self.setRegion(coordinateRegion, animated: true)
     }
     
     public func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        let identifier = "pin"
-        var view = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKPinAnnotationView
-        if view == nil {
-            view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
-            view?.canShowCallout = true
-            view?.calloutOffset = CGPoint(x: -5, y: 5)
-            view?.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
+        if let a = annotation as? BaseMKAnnotation {
+            let identifier = "pin"
+            var view = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKPinAnnotationView
+            if view == nil {
+                view = MKPinAnnotationView(annotation: a, reuseIdentifier: identifier)
+                view?.canShowCallout = true
+                view?.calloutOffset = CGPoint(x: -5, y: 5)
+                view?.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
+            }
+            view?.annotation = a
+            return view
         }
-        view?.annotation = annotation
-        return view
+        return nil
     }
     public func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         if let a = view.annotation as? BaseMKAnnotation {
