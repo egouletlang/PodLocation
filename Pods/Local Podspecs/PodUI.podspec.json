@@ -1,0 +1,35 @@
+{
+  "name": "PodUI",
+  "platforms": {
+    "ios": "10.0"
+  },
+  "version": "1.0.4",
+  "summary": "PodUI classes",
+  "description": "A bunch of classes i have found useful for PodUI",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "Etienne Goulet-Lang": ""
+  },
+  "source": {
+    "git": "https://github.com/egouletlang/PodUI.git",
+    "tag": "1.0.4"
+  },
+  "homepage": "https://github.com/egouletlang/PodUI",
+  "source_files": [
+    "PodUI",
+    "PodUI/**/*.{h,m}",
+    "PodUI/**/*.{swift}"
+  ],
+  "exclude_files": "Classes/Exclude",
+  "dependencies": {
+    "BaseUtils": [
+
+    ],
+    "PodImage": [
+
+    ]
+  }
+}

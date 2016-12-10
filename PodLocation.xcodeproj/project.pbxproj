@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6B42946D1DFB66B600AA2BFB /* BaseMKMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B42946C1DFB66B600AA2BFB /* BaseMKMapView.swift */; };
+		6B42946F1DFB7F9200AA2BFB /* BaseMKAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B42946E1DFB7F9200AA2BFB /* BaseMKAnnotation.swift */; };
+		6B4294711DFB86DE00AA2BFB /* BaseMKMapViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B4294701DFB86DE00AA2BFB /* BaseMKMapViewDelegate.swift */; };
 		6BFBC4581DFB1F20005E9CF2 /* PodLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BFBC44E1DFB1F20005E9CF2 /* PodLocation.framework */; };
 		6BFBC45D1DFB1F20005E9CF2 /* PodLocationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BFBC45C1DFB1F20005E9CF2 /* PodLocationTests.swift */; };
 		6BFBC45F1DFB1F20005E9CF2 /* PodLocation.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BFBC4511DFB1F20005E9CF2 /* PodLocation.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -30,6 +33,9 @@
 		3D98E7F2910DDA791FB49739 /* Pods-PodLocationTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PodLocationTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-PodLocationTests/Pods-PodLocationTests.release.xcconfig"; sourceTree = "<group>"; };
 		423850B5E6BA534759E80C33 /* Pods_PodLocationTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PodLocationTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		506D77C3B8382C8B69DE11F9 /* Pods-PodLocationTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PodLocationTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PodLocationTests/Pods-PodLocationTests.debug.xcconfig"; sourceTree = "<group>"; };
+		6B42946C1DFB66B600AA2BFB /* BaseMKMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseMKMapView.swift; sourceTree = "<group>"; };
+		6B42946E1DFB7F9200AA2BFB /* BaseMKAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseMKAnnotation.swift; sourceTree = "<group>"; };
+		6B4294701DFB86DE00AA2BFB /* BaseMKMapViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseMKMapViewDelegate.swift; sourceTree = "<group>"; };
 		6BFBC44E1DFB1F20005E9CF2 /* PodLocation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PodLocation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6BFBC4511DFB1F20005E9CF2 /* PodLocation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PodLocation.h; sourceTree = "<group>"; };
 		6BFBC4521DFB1F20005E9CF2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -96,9 +102,12 @@
 		6BFBC4501DFB1F20005E9CF2 /* PodLocation */ = {
 			isa = PBXGroup;
 			children = (
+				6B42946C1DFB66B600AA2BFB /* BaseMKMapView.swift */,
 				6BFBC4511DFB1F20005E9CF2 /* PodLocation.h */,
 				6BFBC4521DFB1F20005E9CF2 /* Info.plist */,
 				6BFBC4681DFB22EF005E9CF2 /* LocationManager.swift */,
+				6B42946E1DFB7F9200AA2BFB /* BaseMKAnnotation.swift */,
+				6B4294701DFB86DE00AA2BFB /* BaseMKMapViewDelegate.swift */,
 			);
 			path = PodLocation;
 			sourceTree = "<group>";
@@ -317,6 +326,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6B42946D1DFB66B600AA2BFB /* BaseMKMapView.swift in Sources */,
+				6B4294711DFB86DE00AA2BFB /* BaseMKMapViewDelegate.swift in Sources */,
+				6B42946F1DFB7F9200AA2BFB /* BaseMKAnnotation.swift in Sources */,
 				6BFBC4691DFB22EF005E9CF2 /* LocationManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -358,6 +370,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -411,6 +424,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;

@@ -8,34 +8,44 @@
 
 import Foundation
 import CoreLocation
+import BaseUtils
 
 open class LocationManager: NSObject, CLLocationManagerDelegate {
 
+    //MARK: - Notifications -
+    open static let NEW_LOCATION_NOTIFICATION = "notification://new_location"
+    open class func registerForLocationUpdates(observer: Any, selector: Selector) {
+        let notificationName = NSNotification.Name(rawValue: LocationManager.NEW_LOCATION_NOTIFICATION)
+        NotificationCenter.default.addObserver(observer,
+                                               selector: selector,
+                                               name: notificationName,
+                                               object: nil)
+    }
+    
+    
     //MARK: - Builders -
-    open class func setupWhileInUse(activityType: CLActivityType) -> LocationManager {
+    open class func setupWhileInUse(activityType: CLActivityType) {
         LocationManager.instance = LocationManager(mode: .WhileInUse, activityType: activityType)
-        return LocationManager.instance
     }
     
-    open class func setupAlwaysOn(activityType: CLActivityType) -> LocationManager {
+    open class func setupAlwaysOn(activityType: CLActivityType) {
         LocationManager.instance = LocationManager(mode: .AlwaysOn, activityType: activityType)
-        return LocationManager.instance
     }
     
-    open class func setupDefault(background: Bool = false) -> LocationManager {
-        return background ? setupAlwaysOn(activityType: .other) : setupWhileInUse(activityType: .other)
+    open class func setupDefault(background: Bool = false) {
+        background ? setupAlwaysOn(activityType: .other) : setupWhileInUse(activityType: .other)
     }
     
-    open class func setupForCarNavigation(background: Bool = false) -> LocationManager {
-        return background ? setupAlwaysOn(activityType: .automotiveNavigation) : setupWhileInUse(activityType: .automotiveNavigation)
+    open class func setupForCarNavigation(background: Bool = false) {
+        background ? setupAlwaysOn(activityType: .automotiveNavigation) : setupWhileInUse(activityType: .automotiveNavigation)
     }
     
-    open class func setupForPedestrianNavigation(background: Bool = false) -> LocationManager {
-        return background ? setupAlwaysOn(activityType: .fitness) : setupWhileInUse(activityType: .fitness)
+    open class func setupForPedestrianNavigation(background: Bool = false) {
+        background ? setupAlwaysOn(activityType: .fitness) : setupWhileInUse(activityType: .fitness)
     }
     
-    open class func setupForFitness(background: Bool = false) -> LocationManager {
-        return background ? setupAlwaysOn(activityType: .fitness) : setupWhileInUse(activityType: .fitness)
+    open class func setupForFitness(background: Bool = false) {
+        background ? setupAlwaysOn(activityType: .fitness) : setupWhileInUse(activityType: .fitness)
     }
     
     //MARK: - Shared Instance -
@@ -60,6 +70,9 @@ open class LocationManager: NSObject, CLLocationManagerDelegate {
         self.mode = mode
         self.activityType = activityType
         manager = CLLocationManager()
+        manager.desiredAccuracy = kCLLocationAccuracyBest
+        manager.distanceFilter = 200
+        manager.delegate = self
     }
     
     private var mode = Mode.WhileInUse
@@ -122,6 +135,58 @@ open class LocationManager: NSObject, CLLocationManagerDelegate {
     }
     
     public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        print("\(locations)")
+        let accurateLocations = locations.flatMap() { $0.horizontalAccuracy > 0 ? $0 : nil }
+        
+        let numberOfLocation = Double(accurateLocations.count)
+        
+        let avgLatitude = (accurateLocations.reduce(0) { $0 + $1.coordinate.latitude }) / numberOfLocation
+        let avgLongitude = accurateLocations.reduce(0) { $0 + $1.coordinate.longitude } / numberOfLocation
+        let avgAltitude = accurateLocations.reduce(0) { $0 + $1.altitude } / numberOfLocation
+        let avgHorzAccuracy = accurateLocations.reduce(0) { $0 + $1.horizontalAccuracy } / numberOfLocation
+        let avgVertAccuracy = accurateLocations.reduce(0) { $0 + $1.verticalAccuracy } / numberOfLocation
+        let avgCourse = accurateLocations.reduce(0) { $0 + $1.course } / numberOfLocation
+        let avgSpeed = accurateLocations.reduce(0) { $0 + $1.speed } / numberOfLocation
+        
+        let date = Date(timeIntervalSinceNow: 0)
+        
+        currentLocation = CLLocation(coordinate: CLLocationCoordinate2D(latitude: avgLatitude, longitude: avgLongitude),
+                  altitude: avgAltitude,
+                  horizontalAccuracy: avgHorzAccuracy,
+                  verticalAccuracy: avgVertAccuracy,
+                  course: avgCourse,
+                  speed: avgSpeed,
+                  timestamp: date)
+        
+        print("got new location callback")
+        NotificationCenter.default.post(
+            name: NSNotification.Name(rawValue: LocationManager.NEW_LOCATION_NOTIFICATION),
+            object: nil)
+        
+    }
+    
+    private var currentLocation: CLLocation?
+    
+    open func getCurrentLocation() -> CLLocation? {
+        return currentLocation
+    }
+    
+    open func getCurrentAddress() -> CLPlacemark? {
+        return AsyncToSync(timeout: 10).start() { (async2sync) in
+            if let curr = self.currentLocation {
+                CLGeocoder().reverseGeocodeLocation(curr) { (places, error) -> Void in
+                    async2sync.result = places?.first
+                }
+            } else {
+                async2sync.result = nil
+            }
+        }
+    }
+    
+    open func getCurrentAddress(callback: @escaping (CLPlacemark?) -> Void) {
+        if let curr = self.currentLocation {
+            CLGeocoder().reverseGeocodeLocation(curr) { (places, error) -> Void in
+                callback(places?.first)
+            }
+        }
     }
 }

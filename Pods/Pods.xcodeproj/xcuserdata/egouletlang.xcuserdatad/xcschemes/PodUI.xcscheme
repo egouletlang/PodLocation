@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '5D3A3773A048F547C415B0882A3290BD'
-               BlueprintName = 'BaseUtils'
+               BlueprintIdentifier = '18F95B7DDDFEE295D5206D82A4D0EB56'
+               BlueprintName = 'PodUI'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'BaseUtils.framework'>
+               BuildableName = 'PodUI.framework'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
