@@ -81,6 +81,9 @@ open class LocationManager: NSObject, CLLocationManagerDelegate {
     private var manager: CLLocationManager!
     
     //MARK: - Control Functions -
+    open func willAskForPermissionsOnStart() -> Bool {
+        return CLLocationManager.authorizationStatus() == .notDetermined
+    }
     open func start(callback: (UIAlertController)->Void) {
         switch CLLocationManager.authorizationStatus() {
         case .notDetermined:
