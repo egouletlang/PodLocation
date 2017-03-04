@@ -10,11 +10,15 @@ import Foundation
 import MapKit
 import BaseUtils
 
-private let REGION_RADIUS: CLLocationDistance = 100
+private let REGION_RADIUS: CLLocationDistance = 200
 //private let testRegion = MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(0, 0), 1, 1)
 private let M2DEG = MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(0, 0), 1, 1).span.latitudeDelta
 
 open class BaseMKMapView: MKMapView, MKMapViewDelegate {
+    
+    open func m2Deg(m: Double) -> Double {
+        return m * M2DEG
+    }
     
     open weak var baseMKMapViewDelegate: BaseMKMapViewDelegate?
     
@@ -57,6 +61,7 @@ open class BaseMKMapView: MKMapView, MKMapViewDelegate {
     open func centerMapOnLocation(location: CLLocation) {
         self.centerMapOnLocation(coordinate: location.coordinate)
     }
+    
     open func centerMapOnLocation(coordinate: CLLocationCoordinate2D) {
         let coordinateRegion = MKCoordinateRegionMakeWithDistance(coordinate,
                                                                   REGION_RADIUS * 2.0, REGION_RADIUS * 2.0)
@@ -78,10 +83,16 @@ open class BaseMKMapView: MKMapView, MKMapViewDelegate {
         }
         return nil
     }
+    
     public func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         if let a = view.annotation as? BaseMKAnnotation {
             self.baseMKMapViewDelegate?.tapped(baseMKAnnotation: a)
         }
+    }
+    
+    open func addPin(pin: BaseMKAnnotation) {
+        self.addAnnotation(pin)
+        
     }
     
     open func currLocationUpdated() {

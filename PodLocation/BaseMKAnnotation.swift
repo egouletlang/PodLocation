@@ -11,6 +11,10 @@ import MapKit
 
 open class BaseMKAnnotation: NSObject, MKAnnotation {
     
+    public override init() {
+        super.init()
+    }
+    
     public init(lat: Double, lon: Double, title: String?, subTitle: String?, clickResponse: AnyObject?) {
         super.init()
         self.setCoordinate(coordinate: CLLocationCoordinate2D(latitude: lat, longitude: lon))

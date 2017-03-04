@@ -10,6 +10,10 @@ import Foundation
 import CoreLocation
 import BaseUtils
 
+public protocol LocationManagerDelegate: NSObjectProtocol {
+    func LMD_newStatus()
+}
+
 open class LocationManager: NSObject, CLLocationManagerDelegate {
 
     //MARK: - Notifications -
@@ -22,6 +26,7 @@ open class LocationManager: NSObject, CLLocationManagerDelegate {
                                                object: nil)
     }
     
+    open weak var locationManagerDelegate: LocationManagerDelegate?
     
     //MARK: - Builders -
     open class func setupWhileInUse(activityType: CLActivityType) {
@@ -81,14 +86,20 @@ open class LocationManager: NSObject, CLLocationManagerDelegate {
     private var manager: CLLocationManager!
     
     //MARK: - Control Functions -
+    open func isAuthorized() -> Bool {
+        let status = CLLocationManager.authorizationStatus()
+        return (self.mode == .AlwaysOn) ? status == .authorizedAlways : status == .authorizedWhenInUse
+    }
+    
     open func willAskForPermissionsOnStart() -> Bool {
         return CLLocationManager.authorizationStatus() == .notDetermined
     }
+    
     open func start(callback: (UIAlertController)->Void) {
         switch CLLocationManager.authorizationStatus() {
         case .notDetermined:
-            (self.mode == .AlwaysOn) ?  manager.requestAlwaysAuthorization() :
-                                        manager.requestWhenInUseAuthorization()
+            (self.mode == .AlwaysOn) ? manager.requestAlwaysAuthorization() :
+                                       manager.requestWhenInUseAuthorization()
         case .restricted, .denied:
             callback(LocationManager.buildOpenSettingsViewController(currentMode: "Disabled",
                                                                      desiredMode: (self.mode == .AlwaysOn) ? "Always" : "While In Use"))
@@ -135,6 +146,7 @@ open class LocationManager: NSObject, CLLocationManagerDelegate {
         default:
             break
         }
+        self.locationManagerDelegate?.LMD_newStatus()
     }
     
     public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
