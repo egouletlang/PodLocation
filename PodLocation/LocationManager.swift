@@ -26,7 +26,7 @@ open class LocationManager: NSObject, CLLocationManagerDelegate {
                                                object: nil)
     }
     
-    open weak var locationManagerDelegate: LocationManagerDelegate?
+    open var delegates: [LocationManagerDelegate] = []
     
     //MARK: - Builders -
     open class func setupWhileInUse(activityType: CLActivityType) {
@@ -146,7 +146,11 @@ open class LocationManager: NSObject, CLLocationManagerDelegate {
         default:
             break
         }
-        self.locationManagerDelegate?.LMD_newStatus()
+        
+        for d in self.delegates {
+            d.LMD_newStatus()
+        }
+        
     }
     
     public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
