@@ -1,26 +1,20 @@
 PODS:
-  - BaseUtils (1.0.15)
-  - PodImage (1.0.8):
+  - BaseUtils (1.0.41)
+  - PodImage (1.0.24):
     - BaseUtils
-  - PodUI (1.0.4):
+  - PodUI (1.0.27):
     - BaseUtils
     - PodImage
 
 DEPENDENCIES:
-  - BaseUtils (from `~/Code/Pods/BaseUtils/`)
-  - PodUI (from `~/Code/Pods/PodUI/`)
-
-EXTERNAL SOURCES:
-  BaseUtils:
-    :path: ~/Code/Pods/BaseUtils/
-  PodUI:
-    :path: ~/Code/Pods/PodUI/
+  - BaseUtils
+  - PodUI
 
 SPEC CHECKSUMS:
-  BaseUtils: f5564e95a1ee1d08e6251e7d12e300ae561cd826
-  PodImage: 232eab408fc3c12123dbbfd64a6465c607539104
-  PodUI: a6b33cc1d39e12919bed927682c902dbbcb4fb5a
+  BaseUtils: 61e722e559d29833b2d1712902581de43ae4c48c
+  PodImage: 644aafafcfd4849332800a530e423206f3b4ea70
+  PodUI: ccbd7a84504ea2f5b5c4c1b9ef6b46e2079c4b61
 
-PODFILE CHECKSUM: 17a11552a67bbc084f75b14ad2ecb756563482e3
+PODFILE CHECKSUM: f6521fe756edd388b609d11f9aca5f47e6af5c83
 
 COCOAPODS: 1.1.1

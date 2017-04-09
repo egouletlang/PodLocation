@@ -24,13 +24,15 @@ open class AsyncToSync<T> {
         }
     }
     
-    open func start(block: (AsyncToSync<T>)->Void) -> T? {
-        block(self)
+    open func start(block: @escaping (AsyncToSync<T>)->Void) -> T? {
+        ThreadHelper.checkedExecuteOnBackgroundThread {
+            block(self)
+        }
         
         var timeSlept: TimeInterval = 0
         while (!isResultReady && timeSlept < timeout) {
             Thread.sleep(forTimeInterval: SLEEP_TIME)
-            timeSlept += timeSlept
+            timeSlept += SLEEP_TIME
         }
         
         return result
