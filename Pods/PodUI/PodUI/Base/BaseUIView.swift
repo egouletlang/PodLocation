@@ -13,6 +13,9 @@ import BaseUtils
 open class BaseUIView: UIView, UIGestureRecognizerDelegate {
     
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        if (gestureRecognizer as? UITapGestureRecognizer) != nil {
+            return false;
+        }
         return true
     }
     

@@ -100,6 +100,13 @@ open class BaseUIViewController: UIViewController, BaseUIViewDelegate {
                 self.setNavigationItem(text: self.dismissButtonCopy(), target: self, selector: #selector(BaseUIViewController.dismissVC), left: true)
             }
             
+            if addTapToDismissKeyboard() {
+                let tapGesture = UITapGestureRecognizer(target: self, action: #selector(BaseUIViewController.dismissKeyboard))
+                tapGesture.numberOfTapsRequired = 1
+                view.isUserInteractionEnabled = true
+                view.addGestureRecognizer(tapGesture)
+            }
+            
             createLayout()
         }
     }
@@ -211,6 +218,10 @@ open class BaseUIViewController: UIViewController, BaseUIViewDelegate {
         return true
     }
     
+    open func addTapToDismissKeyboard() -> Bool {
+        return true
+    }
+    
     open func dismissButtonCopy() -> String {
         return "Cancel"
     }
@@ -219,21 +230,49 @@ open class BaseUIViewController: UIViewController, BaseUIViewDelegate {
         return false
     }
     
+    open func tableview() -> UITableView? {
+        return nil
+    }
+    
+    open func contentInsetForTableView(keyboardHeight: CGFloat) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 0, left: 0, bottom: keyboardHeight, right: 0)
+    }
+    
+    open func dismissKeyboard() {
+        resignNested(view: self.view)
+    }
+    
+    private func resignNested(view: UIView) {
+        for v in view.subviews {
+            v.resignFirstResponder()
+            resignNested(view: v)
+        }
+    }
     
     open var keyboardHeight: CGFloat = 0
     open func keyboardWillShow(_ notification: NSNotification) {
         if let keyboardSize: CGFloat = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.height {
             keyboardHeight = keyboardSize
         }
-        UIView.animate(withDuration: 0.3) {
-            self.frameUpdate()
+        
+        if let tbl = self.tableview() {
+            tbl.contentInset = self.contentInsetForTableView(keyboardHeight: keyboardHeight)
+        } else {
+            UIView.animate(withDuration: 0.3) {
+                self.frameUpdate()
+            }
         }
+        
     }
     
     open func keyboardWillHide(_ notification: NSNotification) {
         keyboardHeight = 0
-        UIView.animate(withDuration: 0.3) {
-            self.frameUpdate()
+        if let tbl = self.tableview() {
+            tbl.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        } else {
+            UIView.animate(withDuration: 0.3) {
+                self.frameUpdate()
+            }
         }
     }
 }

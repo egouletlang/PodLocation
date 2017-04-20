@@ -9,6 +9,14 @@
 import Foundation
 import UIKit
 
+open class BaseUINavigationBar: UINavigationBar {
+    
+    open override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+        return false
+    }
+    
+}
+
 open class BaseUINavigationController: UINavigationController {
     
     override public init(navigationBarClass: AnyClass?, toolbarClass: AnyClass?) {
@@ -32,6 +40,7 @@ open class BaseUINavigationController: UINavigationController {
         if !initialized {
             initialized = true
             initialize()
+            
         }
     }
     

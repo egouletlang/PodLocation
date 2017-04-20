@@ -5,7 +5,7 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '10.0'
 
   s.name         = "PodLocation"
-  s.version      = "1.0.10"
+  s.version      = "1.0.11"
   s.summary      = "PodLocation classes"
   s.description  = <<-DESC
   A bunch of classes i have found useful for PodLocation

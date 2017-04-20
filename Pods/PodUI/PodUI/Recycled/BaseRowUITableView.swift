@@ -242,8 +242,6 @@ open class BaseRowUITableView: UITableView, UITableViewDataSource, UITableViewDe
         }
     }
     
-    
-    
     override open func becomeFirstResponder() -> Bool {
         for cell in self.visibleCells {
             if cell.canBecomeFocused {
