@@ -63,9 +63,14 @@ open class BaseUIViewController: UIViewController, BaseUIViewDelegate {
     }
     open var isPortraitMode: Bool {
         get {
-            // Don't use UIDevice.currentDevice().orientation as that seems to sometimes be wrong ?!
+#if MAIN
             let orientation = UIApplication.shared.statusBarOrientation
             return (orientation == .portrait || orientation == .portraitUpsideDown)
+#else
+            return true
+#endif
+            // Don't use UIDevice.currentDevice().orientation as that seems to sometimes be wrong ?!
+            
         }
     }
     
@@ -141,9 +146,13 @@ open class BaseUIViewController: UIViewController, BaseUIViewDelegate {
     
     // MARK: - Foreground Event -
     open func isVisible() -> Bool {
+#if MAIN
         return (self.view.window != nil &&
             self.isViewLoaded &&
             UIApplication.shared.applicationState == .active)
+#else
+        return true
+#endif
     }
     
     // MARK: - BaseUIViewDelegate -

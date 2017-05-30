@@ -123,12 +123,14 @@ public class BaseUILabel: UILabel, UIGestureRecognizerDelegate {
     }
     
     open func willConsumeLocationTap(_ point: CGPoint?) -> Bool {
+#if MAIN
         if let url = willLinkIntercept(point) {
             if !(delegate?.interceptUrl?(url) ?? false) {
                 UIApplication.shared.open(url, options: [:], completionHandler: nil)
             }
             return true
         }
+#endif
         return false
     }
     

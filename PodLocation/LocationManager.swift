@@ -130,9 +130,11 @@ open class LocationManager: NSObject, CLLocationManagerDelegate {
         alertController.addAction(cancelAction)
         
         let openAction = UIAlertAction(title: "Open Settings", style: .default) { (action) in
+#if MAIN
             if let url = URL(string:UIApplicationOpenSettingsURLString) {
-                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                self.extensionContext?.open(url, options: [:], completionHandler: nil)
             }
+#endif
         }
         alertController.addAction(openAction)
         return alertController
