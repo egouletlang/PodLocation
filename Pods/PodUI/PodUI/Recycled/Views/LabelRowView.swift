@@ -94,6 +94,7 @@ open class LabelRowView: BaseRowView {
     }
     
     open override func getDesiredSize(model: BaseRowModel, forWidth w: CGFloat) -> CGSize {
+        
         if let m = model as? LabelRowModel {
             titleLabel.labelInformation = m.title
             subTitleLabel.labelInformation = m.subTitle
@@ -121,11 +122,22 @@ open class LabelRowView: BaseRowView {
             detailsSize.height = m.detailsNumberOfLines > 0 ? (detailsLineHeight * CGFloat(m.detailsNumberOfLines)) : detailsSize.height
         }
         
-        let reqWidth: CGFloat = max(titleSize.width, max(subTitleSize.width, detailsSize.width))
-        return CGSize(width: reqWidth,
-                      height: (titleMargins.top + titleSize.height + titleMargins.bottom) +
+        var reqWidth: CGFloat = max(titleSize.width, max(subTitleSize.width, detailsSize.width))
+        var reqHeight = (titleMargins.top + titleSize.height + titleMargins.bottom) +
                         (subTitleMargins.top + subTitleSize.height + subTitleMargins.bottom) +
-                        (detailsMargins.top + detailsSize.height + detailsMargins.bottom))
+                        (detailsMargins.top + detailsSize.height + detailsMargins.bottom)
+        
+        if model.width > 0 {
+            reqWidth = reqWidth > model.height ? reqWidth : model.width
+        } else if model.width == -1 {
+            reqWidth = w
+        }
+        
+        if model.height != 0 {
+            reqHeight = reqHeight > model.height ? reqHeight : model.height
+        }
+        
+        return CGSize(width: reqWidth, height: reqHeight)
         
     }
     

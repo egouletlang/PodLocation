@@ -15,6 +15,9 @@ private let DEFAULT_INACTIVE_BKG_COLOR = UIColor(rgb: 0xFFFFFF)
 private let DEFAULT_BORDER_COLOR = UIColor(rgb: 0x7B868C)
 
 public class BaseUILabel: UILabel, UIGestureRecognizerDelegate {
+    
+    public static let OPEN_URL_EVENT = Notification.Name("event.open_url")
+    
     // MARK: - Constructors -
     public init() {
         super.init(frame: CGRect.zero)
@@ -123,14 +126,12 @@ public class BaseUILabel: UILabel, UIGestureRecognizerDelegate {
     }
     
     open func willConsumeLocationTap(_ point: CGPoint?) -> Bool {
-#if MAIN
         if let url = willLinkIntercept(point) {
             if !(delegate?.interceptUrl?(url) ?? false) {
-                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                NotificationCenter.default.post(name: BaseUILabel.OPEN_URL_EVENT, object: ["url": url])
             }
             return true
         }
-#endif
         return false
     }
     
