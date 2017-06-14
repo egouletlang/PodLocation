@@ -223,6 +223,13 @@ open class BaseUIViewController: UIViewController, BaseUIViewDelegate {
         }
     }
     
+    open func addTap(_ view: UIView, selector: Selector) {
+        let tapGesture = UITapGestureRecognizer(target: self, action: selector)
+        tapGesture.numberOfTapsRequired = 1
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(tapGesture)
+    }
+    
     open func addDismissButton() -> Bool {
         return true
     }
